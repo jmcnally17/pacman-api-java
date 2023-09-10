@@ -13,7 +13,6 @@ The original project monolith (with a full comprehensive commit history) can be 
 ### Technologies Used
 
 - [Trello](https://trello.com/) for monitoring feature progress
-- [Render](https://render.com/) for deployment
 - [MongoDB Atlas](https://www.mongodb.com/atlas/database) and [Redis Labs](https://redis.com/) for hosting the databases
 - [GitHub](https://github.com/) for version control
 
