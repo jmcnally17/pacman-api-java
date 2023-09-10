@@ -2,9 +2,13 @@
 
 This repository is the backend server for my solo Pac-Man project. This API connects to both MongoDB and Redis databases to store and retrieve user account and score data respectively.
 
-The client application that pairs with this API can be found at [https://github.com/jmcnally17/pacman-client](https://github.com/jmcnally17/pacman-client).
+The client application that pairs with this API can be found at https://github.com/jmcnally17/pacman-client
 
-For the old Express API written in Javascript, see the old project repo found at [https://github.com/jmcnally17/pacman-API-old](https://github.com/jmcnally17/pacman-API-old).
+The JS Express version of this API (which is currently in use on the deployed version) can be found at https://github.com/jmcnally17/pacman-api-js
+
+[//]: # (The PHP Slim version of this API can be found at https://github.com/jmcnally17/pacman-api-php)
+
+The original project monolith repository (with a full comprehensive commit history) can be found at https://github.com/jmcnally17/pacman-old
 
 [<img src="./images/pacman-play-button.png">](https://pacman-js92.onrender.com)
 
