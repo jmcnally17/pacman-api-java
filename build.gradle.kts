@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    jacoco
 }
 
 repositories {
@@ -7,10 +8,24 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.testng:testng:7.8.0")
 }
 
+jacoco {
+    toolVersion = "0.8.10"
+    reportsDirectory.set(layout.buildDirectory.dir("coverage"))
+}
+
+
 tasks.test {
-    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+        events("passed", "skipped", "failed")
+    }
+    finalizedBy(tasks.jacocoTestReport)
+    useTestNG()
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
 }
