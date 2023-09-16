@@ -16,6 +16,7 @@ The original project monolith (with a full comprehensive commit history) can be 
 - [Spring Boot](https://spring.io/projects/spring-boot) as a web framework
 - [MongoDB Atlas](https://www.mongodb.com/atlas/database) and [Redis Labs](https://redis.com/) for hosting the databases
 - [GitHub](https://github.com/) for version control
+- [Intellij IDEA](https://www.jetbrains.com/idea/) as an IDE
 
 ## Running Locally
 
