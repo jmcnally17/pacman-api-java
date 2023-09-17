@@ -11,6 +11,8 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("redis.clients:jedis:5.0.0")
+
     testImplementation("org.testng:testng:7.8.0")
 }
 
