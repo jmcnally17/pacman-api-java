@@ -11,11 +11,10 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("redis.clients:jedis:5.0.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testng:testng:7.8.0")
-    testImplementation("org.mockito:mockito-core:5.5.0")
 }
 
 jacoco {
@@ -30,7 +29,7 @@ tasks.test {
         events("passed", "skipped", "failed")
     }
     finalizedBy(tasks.jacocoTestReport)
-    useTestNG()
+    useJUnitPlatform()
 }
 
 tasks.jacocoTestReport {

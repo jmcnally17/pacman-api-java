@@ -1,29 +1,30 @@
-package pacmanapi.utility;
+package pacmanapi.unit.utility;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import pacmanapi.models.Score;
+import pacmanapi.utility.RedisClient;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.resps.Tuple;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.*;
 
-@Test
 public class RedisClientTest {
   private JedisPooled jedis;
+
   private RedisClient redisClient;
 
-  @BeforeMethod
-  public void beforeTest() {
+  @BeforeEach
+  public void beforeEach() {
     jedis = mock(JedisPooled.class);
     redisClient = new RedisClient(jedis);
   }
 
   @Test
-  public void formatsScoresForClient() {
+  public void formatsScores() {
     this.setUpMockData();
     Score score1 = new Score("Alan", 10000);
     Score score2 = new Score("Steve", 5500);
