@@ -15,12 +15,8 @@ public final class RedisClient {
   }
 
   public ArrayList<Score> getTopTenScores() {
-    List<Tuple> scoresData = this.getSortedSetData("scores", 0, 10);
+    List<Tuple> scoresData = this.jedis.zrevrangeWithScores("scores", 0, 10);
     return this.convertScoresData(scoresData);
-  }
-
-  private List<Tuple> getSortedSetData(String key, int start, int stop) {
-    return this.jedis.zrevrangeWithScores(key, start, stop);
   }
 
   private ArrayList<Score> convertScoresData(List<Tuple> scoresData) {
