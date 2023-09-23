@@ -1,6 +1,6 @@
 package pacmanapi.utility;
 
-import pacmanapi.models.Score;
+import pacmanapi.model.Score;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.resps.Tuple;
 

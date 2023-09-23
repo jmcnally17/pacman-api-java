@@ -1,9 +1,9 @@
-package pacmanapi.controllers;
+package pacmanapi.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pacmanapi.models.Score;
+import pacmanapi.model.Score;
 import pacmanapi.utility.RedisClient;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package pacmanapi.unit.models;
+package pacmanapi.unit.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pacmanapi.models.Score;
+import pacmanapi.model.Score;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -2,7 +2,7 @@ package pacmanapi.unit.utility;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pacmanapi.models.Score;
+import pacmanapi.model.Score;
 import pacmanapi.utility.RedisClient;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.resps.Tuple;

@@ -1,12 +1,12 @@
-package pacmanapi.unit.controllers;
+package pacmanapi.unit.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import pacmanapi.controllers.ScoresController;
-import pacmanapi.models.Score;
+import pacmanapi.controller.ScoresController;
+import pacmanapi.model.Score;
 import pacmanapi.utility.RedisClient;
 
 import java.util.ArrayList;
