@@ -2,6 +2,7 @@ package pacmanapi.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pacmanapi.model.User;
 import pacmanapi.utility.RedisClient;
 import redis.clients.jedis.JedisPooled;
 
@@ -15,5 +16,10 @@ public class Config {
   @Bean
   public RedisClient redisClient(JedisPooled jedis) {
     return new RedisClient(jedis);
+  }
+
+  @Bean
+  public User user() {
+    return new User();
   }
 }
