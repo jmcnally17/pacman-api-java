@@ -21,10 +21,8 @@ public final class ScoresController {
   @GetMapping("/scores")
   public HashMap<String, ArrayList<Score>> getScores() {
     ArrayList<Score> scores = this.redisClient.getTopTenScores();
-
     HashMap<String, ArrayList<Score>> responseData = new HashMap<>();
     responseData.put("scores", scores);
-
     return responseData;
   }
 }
