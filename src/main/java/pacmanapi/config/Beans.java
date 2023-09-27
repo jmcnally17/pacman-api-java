@@ -7,7 +7,7 @@ import pacmanapi.utility.RedisClient;
 import redis.clients.jedis.JedisPooled;
 
 @Configuration
-public class Config {
+public class Beans {
   @Bean
   public JedisPooled jedis() {
     return new JedisPooled("localhost", 6379);
