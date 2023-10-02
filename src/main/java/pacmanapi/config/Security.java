@@ -13,8 +13,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class Security {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-            .authorizeHttpRequests((authorize) -> authorize
+    http.authorizeHttpRequests((authorize) -> authorize
                     .anyRequest().authenticated()
             )
             .httpBasic(withDefaults())
