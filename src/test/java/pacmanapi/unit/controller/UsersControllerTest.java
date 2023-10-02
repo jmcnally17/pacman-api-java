@@ -1,7 +1,9 @@
 package pacmanapi.unit.controller;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import pacmanapi.controller.UsersController;
 import pacmanapi.model.User;
 import pacmanapi.repository.UserRepository;
@@ -14,10 +16,12 @@ import static org.mockito.Mockito.*;
 public class UsersControllerTest {
   private final UserRepository repository = mock(UserRepository.class);
   private final User user = mock(User.class);
+  private final MockedStatic<BCrypt> bCrypt = mockStatic(BCrypt.class);
 
-  @BeforeEach
-  public void beforeEach() {
+  @AfterEach
+  public void afterEach() {
     reset(repository, user);
+    bCrypt.close();
   }
 
   @Test
@@ -38,11 +42,15 @@ public class UsersControllerTest {
 
   @Test
   public void createUserSavesAUser() {
+    bCrypt.when(BCrypt::gensalt).thenReturn("SaltySalt");
+    bCrypt.when(() -> BCrypt.hashpw("NootNoot", "SaltySalt")).thenReturn("SecretNootNoot");
     UsersController usersController = new UsersController(repository);
 
     usersController.createUser("Pingu", "NootNoot", user);
+    bCrypt.verify(BCrypt::gensalt);
+    bCrypt.verify(() -> BCrypt.hashpw("NootNoot", "SaltySalt"));
     verify(user).setUsername("Pingu");
-    verify(user).setPassword("NootNoot");
+    verify(user).setPassword("SecretNootNoot");
     verify(repository).save(user);
   }
 }

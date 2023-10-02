@@ -1,5 +1,6 @@
 package pacmanapi.controller;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import pacmanapi.model.User;
 import pacmanapi.repository.UserRepository;
@@ -29,8 +30,9 @@ public class UsersController {
   @CrossOrigin(origins = "http://localhost:8000")
   @PostMapping("users")
   public void createUser(@RequestParam String username, @RequestParam String password, User user) {
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     user.setUsername(username);
-    user.setPassword(password);
+    user.setPassword(hashedPassword);
     this.repository.save(user);
   }
 }
