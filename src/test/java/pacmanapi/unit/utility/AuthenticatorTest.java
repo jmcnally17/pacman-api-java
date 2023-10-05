@@ -29,13 +29,13 @@ public class AuthenticatorTest {
     when(user.getUsername()).thenReturn("Pingu");
     when(builder.claim("username", "Pingu")).thenReturn(builder);
     when(builder.signWith(secretKey)).thenReturn(builder);
-    when(builder.compact()).thenReturn("ANotSoSecretKey");
+    when(builder.compact()).thenReturn("NotSoSecretKey");
 
     Authenticator authenticator = new Authenticator(secretKey);
-    assertEquals("ANotSoSecretKey", authenticator.generateJwt(user));
+    assertEquals("NotSoSecretKey", authenticator.generateJwt(user));
     jwtsMockedStatic.verify(Jwts::builder);
-    verify(builder.claim("username", "Pingu"));
-    verify(builder.signWith(secretKey));
-    verify(builder.compact());
+    verify(builder).claim("username", "Pingu");
+    verify(builder).signWith(secretKey);
+    verify(builder).compact();
   }
 }
