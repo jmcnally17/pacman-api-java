@@ -24,7 +24,7 @@ public class AuthController {
   public String generateToken(@RequestParam String username, @RequestParam String password) {
     User foundUser = repository.findByUsername(username);
     if (BCrypt.checkpw(password, foundUser.getPassword())) {
-      return authenticator.generateJwt(foundUser);
+      return authenticator.generateToken(foundUser);
     }
     return "";
   }

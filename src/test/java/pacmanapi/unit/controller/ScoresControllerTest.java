@@ -18,13 +18,14 @@ public final class ScoresControllerTest {
     Score score1 = mock(Score.class);
     Score score2 = mock(Score.class);
     Score score3 = mock(Score.class);
-    ArrayList<Score> scores = new ArrayList<>(Arrays.asList(score1, score2, score3));
     RedisClient redisClient = mock(RedisClient.class);
-    when(redisClient.getTopTenScores()).thenReturn(scores);
-    ScoresController scoresController = new ScoresController(redisClient);
-
+    ArrayList<Score> scores = new ArrayList<>(Arrays.asList(score1, score2, score3));
     HashMap<String, ArrayList<Score>> scoresData = new HashMap<>();
     scoresData.put("scores", scores);
+
+    when(redisClient.getTopTenScores()).thenReturn(scores);
+
+    ScoresController scoresController = new ScoresController(redisClient);
     assertEquals(scoresData, scoresController.getScores());
     verify(redisClient).getTopTenScores();
   }
