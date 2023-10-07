@@ -11,6 +11,7 @@ import redis.clients.jedis.resps.Tuple;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 public class RedisClientTest {
@@ -36,6 +37,17 @@ public class RedisClientTest {
     when(jedis.zscore(key, username)).thenReturn(4500.0);
 
     assertEquals(points, redisClient.getScore(username));
+    verify(jedis).zscore(key, username);
+  }
+
+  @Test
+  public void returnsNullWhenNoScoreExistsForUser() {
+    String key = "scores";
+    String username = "EvilPingu";
+
+    when(jedis.zscore(key, username)).thenReturn(null);
+
+    assertNull(redisClient.getScore(username));
     verify(jedis).zscore(key, username);
   }
 

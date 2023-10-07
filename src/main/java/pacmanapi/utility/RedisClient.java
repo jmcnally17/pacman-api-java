@@ -15,8 +15,12 @@ public final class RedisClient {
     this.jedis = jedis;
   }
 
-  public int getScore(String username) {
-    return this.jedis.zscore(this.key, username).intValue();
+  public Integer getScore(String username) {
+    Double foundScore = this.jedis.zscore(this.key, username);
+    if (foundScore == null) {
+      return null;
+    }
+    return foundScore.intValue();
   }
 
   public void saveScore(String username, int points) {
