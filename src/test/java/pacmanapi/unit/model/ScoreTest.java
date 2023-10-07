@@ -15,8 +15,8 @@ public class ScoreTest {
   }
 
   @Test
-  public void hasName() {
-    assertEquals("Alan", score.name());
+  public void hasUsername() {
+    assertEquals("Alan", score.username());
   }
 
   @Test
