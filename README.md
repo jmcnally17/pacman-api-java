@@ -12,7 +12,6 @@ The original project monolith (with a full comprehensive commit history) can be 
 
 ### Technologies Used
 
-- [Trello](https://trello.com/) for monitoring feature progress
 - [Spring Boot](https://spring.io/projects/spring-boot) as a web framework
 - [MongoDB Atlas](https://www.mongodb.com/atlas/database) and [Redis Labs](https://redis.com/) for hosting the databases
 - [GitHub](https://github.com/) for version control
