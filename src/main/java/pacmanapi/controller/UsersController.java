@@ -29,9 +29,9 @@ public class UsersController {
 
   @CrossOrigin(origins = "http://localhost:8000")
   @PostMapping("/users")
-  public void createUser(@RequestParam String username, @RequestParam String password, User user) {
-    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-    user.setUsername(username);
+  public void createUser(@RequestBody HashMap<String, String> body, User user) {
+    String hashedPassword = BCrypt.hashpw(body.get("password"), BCrypt.gensalt());
+    user.setUsername(body.get("username"));
     user.setPassword(hashedPassword);
     this.repository.save(user);
   }

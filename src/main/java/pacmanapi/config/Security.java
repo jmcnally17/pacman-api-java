@@ -7,18 +7,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class Security {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests((authorize) -> authorize
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
             )
-            .httpBasic(withDefaults())
-            .formLogin(withDefaults())
             .csrf(AbstractHttpConfigurer::disable);
     return http.build();
   }

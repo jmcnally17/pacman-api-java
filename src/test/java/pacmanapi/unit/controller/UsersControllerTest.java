@@ -31,30 +31,39 @@ public class UsersControllerTest {
 
   @Test
   public void getUserFindsAUserFromTheRepository() {
-    when(user.getUsername()).thenReturn("UserMcUserface");
-    when(repository.findByUsername("UserMcUserface")).thenReturn(user);
+    String username = "Pingu";
     HashMap<String, String> userMap = new HashMap<>();
-    userMap.put("username", "UserMcUserface");
+    userMap.put("username", username);
     HashMap<String, HashMap<String, String>> userData = new HashMap<>();
     userData.put("user", userMap);
 
-    assertEquals(userData, usersController.getUser("UserMcUserface"));
-    verify(repository).findByUsername("UserMcUserface");
+    when(user.getUsername()).thenReturn(username);
+    when(repository.findByUsername(username)).thenReturn(user);
+
+    assertEquals(userData, usersController.getUser(username));
+    verify(repository).findByUsername(username);
     verify(user).getUsername();
   }
 
   @Test
   public void createUserSavesAUser() {
     MockedStatic<BCrypt> bCryptMockedStatic = mockStatic(BCrypt.class);
+    String salt = "SaltyMcSaltFace";
+    String username = "Pingu";
+    String password = "NootNoot";
+    HashMap<String, String> requestBody = new HashMap<>();
+    requestBody.put("username", username);
+    requestBody.put("password", password);
+    String encryptedPassword = "SecretNootNoot";
 
-    bCryptMockedStatic.when(BCrypt::gensalt).thenReturn("SaltySalt");
-    bCryptMockedStatic.when(() -> BCrypt.hashpw("NootNoot", "SaltySalt")).thenReturn("SecretNootNoot");
+    bCryptMockedStatic.when(BCrypt::gensalt).thenReturn(salt);
+    bCryptMockedStatic.when(() -> BCrypt.hashpw(password, salt)).thenReturn(encryptedPassword);
 
-    usersController.createUser("Pingu", "NootNoot", user);
+    usersController.createUser(requestBody, user);
     bCryptMockedStatic.verify(BCrypt::gensalt);
-    bCryptMockedStatic.verify(() -> BCrypt.hashpw("NootNoot", "SaltySalt"));
-    verify(user).setUsername("Pingu");
-    verify(user).setPassword("SecretNootNoot");
+    bCryptMockedStatic.verify(() -> BCrypt.hashpw(password, salt));
+    verify(user).setUsername(username);
+    verify(user).setPassword(encryptedPassword);
     verify(repository).save(user);
 
     bCryptMockedStatic.close();
