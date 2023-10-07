@@ -1,5 +1,7 @@
 package pacmanapi.unit.utility;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pacmanapi.model.Score;
 import pacmanapi.utility.RedisClient;
@@ -9,12 +11,58 @@ import redis.clients.jedis.resps.Tuple;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 public class RedisClientTest {
+  private final JedisPooled jedis = mock(JedisPooled.class);
+  private RedisClient redisClient;
+
+  @BeforeEach
+  public void beforeEach() {
+    redisClient = new RedisClient(jedis);
+  }
+
+  @AfterEach
+  public void afterEach() {
+    reset(jedis);
+  }
+
   @Test
-  public void formatsScores() {
-    JedisPooled jedis = mock(JedisPooled.class);
+  public void findsAScoreByName() {
+    String key = "scores";
+    String username = "Pingu";
+    int points = 4500;
+
+    when(jedis.zscore(key, username)).thenReturn(4500.0);
+
+    assertEquals(points, redisClient.getScore(username));
+    verify(jedis).zscore(key, username);
+  }
+
+  @Test
+  public void returnsNullWhenNoScoreExistsForUser() {
+    String key = "scores";
+    String username = "EvilPingu";
+
+    when(jedis.zscore(key, username)).thenReturn(null);
+
+    assertNull(redisClient.getScore(username));
+    verify(jedis).zscore(key, username);
+  }
+
+  @Test
+  public void savesAScore() {
+    String key = "scores";
+    String username = "Pingu";
+    int points = 3600;
+
+    redisClient.saveScore(username, points);
+    verify(jedis).zadd(key, points, username);
+  }
+
+  @Test
+  public void getsTheTopTenScoresInRedis() {
     this.setUpMockData(jedis);
     Score score1 = new Score("Alan", 10000);
     Score score2 = new Score("Steve", 5500);
@@ -22,7 +70,6 @@ public class RedisClientTest {
     scores.add(score1);
     scores.add(score2);
 
-    RedisClient redisClient = new RedisClient(jedis);
     assertEquals(redisClient.getTopTenScores(), scores, "Formatted scores should be the same as the expected ArrayList");
     verify(jedis).zrevrangeWithScores("scores", 0, 10);
   }

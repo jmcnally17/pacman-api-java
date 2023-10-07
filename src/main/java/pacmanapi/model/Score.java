@@ -1,3 +1,3 @@
 package pacmanapi.model;
 
-public record Score(String name, int points) {}
+public record Score(String username, int points) {}
