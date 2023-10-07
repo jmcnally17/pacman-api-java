@@ -67,7 +67,7 @@ public class AuthenticatorTest {
     doReturn(claims).when(jwt).getPayload();
     when(claims.get("username")).thenReturn("Pingu");
 
-    assertEquals(userData, authenticator.decodeToken(token));
+    assertEquals(userData, authenticator.authenticateToken(token));
     jwtsMockedStatic.verify(Jwts::parser);
     verify(parserBuilder).verifyWith(secretKey);
     verify(parserBuilder).build();
@@ -93,7 +93,7 @@ public class AuthenticatorTest {
     when(jwt.getPayload()).thenAnswer(invocation -> claims);
     when(claims.get("username")).thenReturn("Pingu");
 
-    assertEquals(userData, authenticator.decodeToken(token));
+    assertEquals(userData, authenticator.authenticateToken(token));
     jwtsMockedStatic.verify(Jwts::parser);
     verify(parserBuilder).verifyWith(secretKey);
     verify(parserBuilder).build();

@@ -7,6 +7,7 @@ import pacmanapi.repository.UserRepository;
 
 import java.util.HashMap;
 
+@CrossOrigin(origins = "http://localhost:8000")
 @RestController
 public class UsersController {
   private final UserRepository repository;
@@ -15,7 +16,6 @@ public class UsersController {
     this.repository = repository;
   }
 
-  @CrossOrigin(origins = "http://localhost:8000")
   @GetMapping("/users/{username}")
   public HashMap<String, HashMap<String, String>> getUser(@PathVariable String username) {
     User user = this.repository.findByUsername(username);
@@ -27,7 +27,6 @@ public class UsersController {
     return responseData;
   }
 
-  @CrossOrigin(origins = "http://localhost:8000")
   @PostMapping("/users")
   public void createUser(@RequestBody HashMap<String, String> body, User user) {
     String hashedPassword = BCrypt.hashpw(body.get("password"), BCrypt.gensalt());

@@ -22,7 +22,7 @@ public class Authenticator {
             .compact();
   }
 
-  public HashMap<String, String> decodeToken(String token) {
+  public HashMap<String, String> authenticateToken(String token) {
     Jwt<?, ?> jwt = Jwts.parser()
             .verifyWith(this.secretKey)
             .build()
