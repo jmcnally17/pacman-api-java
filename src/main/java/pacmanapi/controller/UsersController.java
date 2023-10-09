@@ -1,7 +1,9 @@
 package pacmanapi.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pacmanapi.model.User;
 import pacmanapi.repository.UserRepository;
 
@@ -28,10 +30,28 @@ public class UsersController {
   }
 
   @PostMapping("/users")
-  public void createUser(@RequestBody HashMap<String, String> body, User user) {
-    String hashedPassword = BCrypt.hashpw(body.get("password"), BCrypt.gensalt());
+  public void createUser(@RequestBody HashMap<String, String> body, User user) throws ResponseStatusException {
+    String username = body.get("username");
+    String password = body.get("password");
+    if (username.contains(" ")) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username cannot contain any spaces");
+    } else if (username.length() < 3 || username.length() > 15) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username must be 3-15 characters long");
+    } else if (password.length() < 8) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password must be at least 8 characters long");
+    }
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     user.setUsername(body.get("username"));
     user.setPassword(hashedPassword);
-    this.repository.save(user);
+    try {
+      this.repository.save(user);
+    } catch (Exception e) {
+      String message = e.getMessage();
+      if (message.contains("code=11000")) {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
+      } else {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, message);
+      }
+    }
   }
 }
