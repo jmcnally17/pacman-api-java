@@ -74,6 +74,28 @@ public class UsersControllerTest {
   }
 
   @Test
+  public void createUserRequiresUsernameInRequestBody() {
+    String password = "NootNoot";
+    HashMap<String, String> requestBody = new HashMap<>();
+    requestBody.put("password", password);
+
+    ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> usersController.createUser(requestBody, user));
+    assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    assertEquals("Missing key in request body", exception.getReason());
+  }
+
+  @Test
+  public void createUserRequiresPasswordInRequestBody() {
+    String username = "Pingu";
+    HashMap<String, String> requestBody = new HashMap<>();
+    requestBody.put("username", username);
+
+    ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> usersController.createUser(requestBody, user));
+    assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    assertEquals("Missing key in request body", exception.getReason());
+  }
+
+  @Test
   public void createUserRequiresUsernameWithNoWhitespace() {
     String username = "Pin gu";
     String password = "NootNoot";

@@ -33,6 +33,9 @@ public class UsersController {
   public void createUser(@RequestBody HashMap<String, String> body, User user) throws ResponseStatusException {
     String username = body.get("username");
     String password = body.get("password");
+    if (username == null || password == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing key in request body");
+    }
     if (username.contains(" ")) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username cannot contain any spaces");
     } else if (username.length() < 3 || username.length() > 15) {
