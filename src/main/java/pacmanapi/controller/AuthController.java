@@ -25,13 +25,13 @@ public class AuthController {
   public HashMap<String, HashMap<String, String>> authenticateToken(@RequestHeader HashMap<String, String> header) {
     String token = header.get("authorization");
     if (token == null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing token in request header");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing credentials");
     }
     HashMap<String, String> userData;
     try {
       userData = authenticator.authenticateToken(token);
     } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
     }
     HashMap<String, HashMap<String, String>> responseData = new HashMap<>();
     responseData.put("user", userData);

@@ -59,7 +59,7 @@ public class AuthControllerTest {
 
     ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> authController.authenticateToken(requestHeader));
     assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    assertEquals("Missing token in request header", exception.getReason());
+    assertEquals("Missing credentials", exception.getReason());
   }
 
   @Test
@@ -73,7 +73,7 @@ public class AuthControllerTest {
 
     ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> authController.authenticateToken(requestHeader));
     assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
-    assertEquals("Invalid token", exception.getReason());
+    assertEquals("Invalid credentials", exception.getReason());
     verify(authenticator).authenticateToken(token);
   }
 
