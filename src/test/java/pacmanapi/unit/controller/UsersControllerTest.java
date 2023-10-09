@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.server.ResponseStatusException;
 import pacmanapi.controller.UsersController;
@@ -61,11 +62,16 @@ public class UsersControllerTest {
     requestBody.put("username", username);
     requestBody.put("password", password);
     String encryptedPassword = "SecretNootNoot";
+    String message = "Your account has been created";
+    HashMap<String, String> responseBody = new HashMap<>();
+    responseBody.put("message", message);
 
     bCryptMockedStatic.when(BCrypt::gensalt).thenReturn(salt);
     bCryptMockedStatic.when(() -> BCrypt.hashpw(password, salt)).thenReturn(encryptedPassword);
 
-    usersController.createUser(requestBody, user);
+    ResponseEntity<Object> response = usersController.createUser(requestBody, user);
+    assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    assertEquals(responseBody, response.getBody());
     bCryptMockedStatic.verify(BCrypt::gensalt);
     bCryptMockedStatic.verify(() -> BCrypt.hashpw(password, salt));
     verify(user).setUsername(username);

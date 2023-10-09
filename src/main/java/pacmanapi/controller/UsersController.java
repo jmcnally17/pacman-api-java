@@ -1,6 +1,7 @@
 package pacmanapi.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,7 +31,8 @@ public class UsersController {
   }
 
   @PostMapping("/users")
-  public void createUser(@RequestBody HashMap<String, String> body, User user) throws ResponseStatusException {
+  @ResponseBody
+  public ResponseEntity<Object> createUser(@RequestBody HashMap<String, String> body, User user) throws ResponseStatusException {
     String username = body.get("username");
     String password = body.get("password");
     if (username == null || password == null) {
@@ -48,6 +50,10 @@ public class UsersController {
     user.setPassword(hashedPassword);
     try {
       this.repository.save(user);
+      String message = "Your account has been created";
+      HashMap<String, String> responseBody = new HashMap<>();
+      responseBody.put("message", message);
+      return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     } catch (Exception e) {
       String message = e.getMessage();
       if (message.contains("code=11000")) {
