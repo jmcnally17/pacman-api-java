@@ -34,7 +34,7 @@ public class UsersController {
     String username = body.get("username");
     String password = body.get("password");
     if (username == null || password == null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing key in request body");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required key in request body");
     }
     if (username.contains(" ")) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username cannot contain any spaces");

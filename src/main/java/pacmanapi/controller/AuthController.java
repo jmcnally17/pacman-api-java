@@ -1,7 +1,9 @@
 package pacmanapi.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pacmanapi.model.User;
 import pacmanapi.repository.UserRepository;
 import pacmanapi.utility.Authenticator;
@@ -22,18 +24,31 @@ public class AuthController {
   @GetMapping("/auth")
   public HashMap<String, HashMap<String, String>> authenticateToken(@RequestHeader HashMap<String, String> header) {
     String token = header.get("authorization");
-    HashMap<String, String> userData = authenticator.authenticateToken(token);
+    if (token == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing token in request header");
+    }
+    HashMap<String, String> userData;
+    try {
+      userData = authenticator.authenticateToken(token);
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
+    }
     HashMap<String, HashMap<String, String>> responseData = new HashMap<>();
     responseData.put("user", userData);
     return responseData;
   }
 
   @PostMapping("/auth")
-  public String generateToken(@RequestBody HashMap<String, String> body) {
-    User foundUser = repository.findByUsername(body.get("username"));
-    if (BCrypt.checkpw(body.get("password"), foundUser.getPassword())) {
-      return authenticator.generateToken(foundUser);
+  public String generateToken(@RequestBody HashMap<String, String> body) throws ResponseStatusException {
+    String username = body.get("username");
+    String password = body.get("password");
+    if (username == null || password == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required key in request body");
     }
-    return "";
+    User foundUser = repository.findByUsername(username);
+    if (foundUser == null || !BCrypt.checkpw(password, foundUser.getPassword())) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+    }
+    return authenticator.generateToken(foundUser);
   }
 }

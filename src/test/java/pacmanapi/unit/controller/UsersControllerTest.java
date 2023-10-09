@@ -81,7 +81,7 @@ public class UsersControllerTest {
 
     ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> usersController.createUser(requestBody, user));
     assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    assertEquals("Missing key in request body", exception.getReason());
+    assertEquals("Missing required key in request body", exception.getReason());
   }
 
   @Test
@@ -92,7 +92,7 @@ public class UsersControllerTest {
 
     ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> usersController.createUser(requestBody, user));
     assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    assertEquals("Missing key in request body", exception.getReason());
+    assertEquals("Missing required key in request body", exception.getReason());
   }
 
   @Test
