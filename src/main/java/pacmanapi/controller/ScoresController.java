@@ -1,6 +1,9 @@
 package pacmanapi.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pacmanapi.model.Score;
 import pacmanapi.utility.Authenticator;
 import pacmanapi.utility.RedisClient;
@@ -28,15 +31,34 @@ public class ScoresController {
   }
 
   @PostMapping("/scores")
-  public void saveScore(@RequestHeader HashMap<String, String> header, @RequestBody HashMap<String, Object> body) {
-    HashMap<String, String> tokenUserData = this.authenticator.authenticateToken(header.get("authorization"));
-    String username = tokenUserData.get("username");
-    if (username.equals(body.get("username"))) {
-      Integer currentScore = this.redisClient.getScore(username);
-      int newPoints = (int) body.get("points");
-      if (currentScore == null || newPoints > currentScore) {
-        this.redisClient.saveScore(username, newPoints);
-      }
+  @ResponseBody
+  public ResponseEntity<Object> saveScore(@RequestHeader HashMap<String, String> header, @RequestBody HashMap<String, Object> body) throws ResponseStatusException {
+    String token = header.get("authorization");
+    String username = (String) body.get("username");
+    Integer points = (Integer) body.get("points");
+    if (token == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing credentials");
+    } else if (username == null || points == null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required key in request body");
+    }
+    HashMap<String, String> tokenUserData;
+    try {
+      tokenUserData = this.authenticator.authenticateToken(token);
+    } catch (Exception e) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+    }
+    if (!username.equals(tokenUserData.get("username"))) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+    }
+    Integer currentScore = this.redisClient.getScore(username);
+    if (currentScore == null || points > currentScore) {
+      this.redisClient.saveScore(username, points);
+      String message = "Your score has been saved";
+      HashMap<String, String> responseBody = new HashMap<>();
+      responseBody.put("message", message);
+      return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
   }
 }
