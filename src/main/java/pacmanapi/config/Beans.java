@@ -1,6 +1,7 @@
 package pacmanapi.config;
 
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pacmanapi.model.User;
@@ -12,9 +13,18 @@ import javax.crypto.SecretKey;
 
 @Configuration
 public class Beans {
+  @Value("${redis.host}")
+  private String redisHost;
+  @Value("${redis.port}")
+  private int redisPort;
+  @Value("${redis.user}")
+  private String redisUser;
+  @Value("${redis.password}")
+  private String redisPassword;
+
   @Bean
   public JedisPooled jedis() {
-    return new JedisPooled("localhost", 6379);
+    return new JedisPooled(this.redisHost, this.redisPort, this.redisUser, this.redisPassword);
   }
 
   @Bean

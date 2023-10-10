@@ -51,7 +51,7 @@ public class AuthenticatorTest {
   }
 
   @Test
-  public void decodeTokenReadsATokenWithDoReturn() {
+  public void authenticateTokenReadsATokenWithDoReturn() {
     JwtParserBuilder parserBuilder = mock(JwtParserBuilder.class);
     JwtParser parser = mock(JwtParser.class);
     Jwt<?, ?> jwt = mock(Jwt.class);
@@ -77,7 +77,7 @@ public class AuthenticatorTest {
   }
 
   @Test
-  public void decodeTokenReadsATokenWithAnswer() {
+  public void authenticateTokenReadsATokenWithAnswer() {
     JwtParserBuilder parserBuilder = mock(JwtParserBuilder.class);
     JwtParser parser = mock(JwtParser.class);
     Jwt<?, ?> jwt = mock(Jwt.class);

@@ -10,7 +10,7 @@ import pacmanapi.utility.Authenticator;
 
 import java.util.HashMap;
 
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin(origins = "${client.url}")
 @RestController
 public class AuthController {
   private final UserRepository repository;
