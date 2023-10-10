@@ -11,7 +11,7 @@ import pacmanapi.utility.RedisClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin(origins = "${client.url}")
 @RestController
 public class ScoresController {
   private final RedisClient redisClient;

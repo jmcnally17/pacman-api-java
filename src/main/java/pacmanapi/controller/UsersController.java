@@ -10,7 +10,7 @@ import pacmanapi.repository.UserRepository;
 
 import java.util.HashMap;
 
-@CrossOrigin(origins = "http://localhost:8000")
+@CrossOrigin(origins = "${client.url}")
 @RestController
 public class UsersController {
   private final UserRepository repository;
