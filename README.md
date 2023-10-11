@@ -1,4 +1,4 @@
-# <img width="48" height="48" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg" /> Pac-Man API
+# <img width="48" height="48" src="./images/java.svg" /> Pac-Man API
 
 This repository is the Java backend server for my solo Pac-Man project. This API connects to both MongoDB and Redis databases to store and retrieve user account and score data respectively.
 
