@@ -64,7 +64,7 @@ redis-server
 
 into a separate terminal to do this.
 
-Now you can run the server by entering `gradle bootRun` while in the main directory and the API will be ready to receive requests.
+Now you can run the server by entering `gradle bootRun` while in the [main](https://github.com/jmcnally17/pacman-api-java) directory and the API will be ready to receive requests.
 
 In order to play the game, you must also be running the client application alongside this server (link to that repo found at the top of this README).
 
